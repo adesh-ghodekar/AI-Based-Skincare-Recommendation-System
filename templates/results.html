@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% block title %}Results - Fiora AI{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Skin Type Results</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: 	#e8f4ea; /* pastel purple */
+        }
+
+        .header {
+            padding: 40px 20px 10px;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #333;
+        }
+
+        .subheading {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        .category-section {
+            padding: 20px 60px 40px;
+        }
+
+        .category-title {
+            font-size: 1.8em;
+            margin: 40px 0 20px;
+            color: #2a2a2a;
+        }
+
+        .products-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            flex: 0 0 calc(33.33% - 20px);
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card.selected {
+            box-shadow: 0 0 0 3px #4CAF50;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 260px;
+            object-fit: contain;
+            background-color: #fff; /* changed from grey to white */
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            margin: 0 0 10px;
+            font-size: 1.2em;
+            color: #111;
+        }
+
+        .product-info p {
+            font-size: 0.9em;
+            color: #555;
+            min-height: 60px;
+        }
+
+        .price {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #2a7ec5;
+        }
+
+        .make-it-mine {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .show-routine-btn {
+            display: none;
+            margin: 40px auto;
+            padding: 14px 30px;
+            background-color: #000;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .product-card {
+                flex: 0 0 calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-card {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Your Skin Type: {{ skin_type }}</h1>
+    <div class="subheading">Recommended Products</div>
+</div>
+
+<div class="category-section">
+    {% for category, items in grouped_products.items() %}
+        {% if items %}
+        <div class="category-block">
+            <div class="category-title">{{ category }}</div>
+            <div class="products-grid">
+                {% for product in items %}
+                <div class="product-card" data-category="{{ category }}" data-id="{{ product['Product Name'] }}">
+                    <img src="{{ url_for('static', filename=product['Img']) }}" alt="{{ product['Product Name'] }}" class="product-image">
+                    <div class="product-info">
+                        <h3>{{ product['Product Name'] }}</h3>
+                        <p>{{ product['Info'] }}</p>
+                        <p class="price">₹{{ product['Price'] }}</p>
+                    </div>
+                    <button class="make-it-mine">Make it mine</button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div id="show-routine-button" style="display:none; text-align:center; margin: 40px 0;">
+    <form id="routineForm" action="{{ url_for('routine') }}" method="POST">
+        <input type="hidden" name="selectedProducts" id="selectedProductsInput">
+        <button type="submit" style="padding: 10px 30px; font-size: 1.1em; border-radius: 30px; background-color: #1b0594; color: white; border: none;">Unveil My Routine</button>
+    </form>
+    
+</div>
+
+<script>
+    const selectedProducts = {};
+
+    // Dynamically get all unique category names from the DOM
+    const requiredCategories = [...new Set(
+        Array.from(document.querySelectorAll('.product-card')).map(card => card.dataset.category)
+    )];
+
+    document.querySelectorAll('.make-it-mine').forEach(button => {
+        button.addEventListener('click', function () {
+            const productCard = this.closest('.product-card');
+            const category = productCard.dataset.category;
+            const productId = productCard.dataset.id;
+
+            // Deselect previous selections in the same category
+            document.querySelectorAll(`.product-card[data-category="${category}"]`).forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Select current product
+            productCard.classList.add('selected');
+            selectedProducts[category] = productId;
+
+            // Show routine button if at least 1 product selected
+            if (Object.keys(selectedProducts).length > 0) {
+                document.getElementById('show-routine-button').style.display = 'block';
+                document.getElementById('selectedProductsInput').value = JSON.stringify(selectedProducts);
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>
+{% endblock %}

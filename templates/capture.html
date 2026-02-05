@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="capture-wrapper">
+    <h2 class="page-title">Reveal Your Natural Glow</h2>
+    <p class="instructions">Please ensure you're in a well-lit area, remove makeup and glasses for an accurate scan.</p>
+
+    <div class="camera-section">
+        <video id="video" width="400" height="300" autoplay></video>
+        <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
+    </div>
+
+    <div class="button-group">
+        <button id="snap" class="btn">Capture</button>
+        <span class="or-text">or</span>
+        <input type="file" accept="image/*" id="uploadInput" class="upload-input" />
+    </div>
+
+    <div id="preview-section" class="preview" style="display: none;">
+        <h3>Preview</h3>
+        <img id="preview-image" src="" alt="Captured Preview" />
+        <p class="sub-instruction">If you're happy with the image, click Analyze to proceed.</p>
+    </div>
+
+    <form id="image-form" method="POST" enctype="multipart/form-data" action="/analyze_skin">
+        <input type="hidden" name="image_data" id="image_data">
+        <button type="submit" class="btn analyze">Analyze</button>
+    </form>
+</div>
+
+<style>
+body {
+    background: linear-gradient(to right, #f1f4f9, #fdfdff);
+}
+
+.capture-wrapper {
+    text-align: center;
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: auto;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.page-title {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #2a2a2a;
+    font-weight: 600;
+    animation: slideDown 1s ease forwards;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.instructions {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.camera-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 25px;
+}
+
+.btn {
+    background-color: #007AFF;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+    background-color: #005bbb;
+    transform: scale(1.05);
+}
+
+.or-text {
+    font-size: 14px;
+    color: #999;
+}
+
+.upload-input {
+    padding: 10px 12px;
+    font-size: 15px;
+    color: #333;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 250px;
+    text-align: center;
+}
+
+.preview {
+    margin-top: 30px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.preview img {
+    width: 260px;
+    border-radius: 12px;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sub-instruction {
+    font-size: 14px;
+    color: #666;
+    margin-top: 12px;
+}
+
+.analyze {
+    margin-top: 30px;
+}
+</style>
+
+<script>
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const snap = document.getElementById("snap");
+const imageDataInput = document.getElementById("image_data");
+const previewImage = document.getElementById("preview-image");
+const previewSection = document.getElementById("preview-section");
+const uploadInput = document.getElementById("uploadInput");
+
+navigator.mediaDevices.getUserMedia({ video: true })
+    .then((stream) => {
+        video.srcObject = stream;
+    });
+
+// Webcam capture
+snap.addEventListener("click", function () {
+    canvas.getContext('2d').drawImage(video, 0, 0, 400, 300);
+    const dataUrl = canvas.toDataURL('image/png');
+    imageDataInput.value = dataUrl;
+    previewImage.src = dataUrl;
+    previewSection.style.display = "block";
+});
+
+// Upload from gallery
+uploadInput.addEventListener('change', function () {
+    const file = uploadInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            imageDataInput.value = e.target.result;
+            previewImage.src = e.target.result;
+            previewSection.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+{% endblock %}

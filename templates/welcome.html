@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Welcome - Fiora AI{% endblock %}
+
+{% block content %}
+<style>
+  .animated-text {
+    font-size: 3em;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid #4a6cf7;
+    width: 0;
+    animation: typing 3s steps(30, end) forwards, blink .75s step-end infinite;
+    margin-top: 80px;
+  }
+
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+
+  @keyframes blink {
+    50% { border-color: transparent }
+  }
+
+  .welcome-section {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .btn {
+    margin-top: 30px;
+    padding: 12px 28px;
+    font-size: 1.1em;
+    background: #4a6cf7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .feature-block {
+    max-width: 800px;
+    margin: 50px auto;
+    background: #ffffffee;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    font-size: 1.05em;
+    color: #333;
+    line-height: 1.7;
+  }
+
+  .feature-block h3 {
+    margin-top: 25px;
+    color: #4a6cf7;
+  }
+
+  footer {
+    margin-top: 60px;
+    font-size: 0.95em;
+    color: #777;
+  }
+</style>
+
+<div class="welcome-section">
+  <h1 class="animated-text">Welcome to FIORA AI</h1>
+
+  <div class="feature-block">
+    <p>Hello, <strong>{{ username }}</strong> 🌸<br>
+    Welcome back to <strong>Fiora AI</strong> — your personal skincare assistant 💧</p>
+
+    <h3>Start Routine Finder</h3>
+    <p><strong>Skin Analysis:</strong> Get accurate skin type analysis powered by AI & deep learning.</p>
+
+    <h3>Routine Builder</h3>
+    <p><strong>Custom Routine:</strong> We recommend a perfect AM/PM routine based on your answers & photo.</p>
+
+    <h3>History</h3>
+    <p><strong>Track Progress:</strong> View your saved routines, uploaded photos, and previous reviews.</p>
+
+    <a href="/questions" class="btn">Start Routine Finder</a>
+  </div>
+
+  <footer>
+    &copy; 2025 Fiora AI. Designed with 💙 for your skin.
+  </footer>
+</div>
+{% endblock %}

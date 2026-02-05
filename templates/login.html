@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url("{{ url_for('static', filename='images/back1.jpg') }}") no-repeat center center;
+    background-size: cover;
+    position: relative;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.65); /* soft white filter for readability */
+    z-index: 1;
+  }
+
+  .login-card {
+    z-index: 2;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .login-card h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #4a6cf7;
+    font-size: 26px;
+  }
+
+  .login-card label,
+  .login-card input,
+  .login-card button,
+  .login-card p {
+    width: 100%;
+    display: block;
+  }
+
+  .login-card input {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+  }
+
+  .forgot {
+    text-align: right;
+    margin-top: -10px;
+    margin-bottom: 20px;
+  }
+
+  .login-card button {
+    padding: 12px;
+    background-color: #4a6cf7;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .login-card p a {
+    color: #4a6cf7;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+
+<div class="login-wrapper">
+  <div class="overlay"></div>
+
+  <div class="login-card">
+    <h2>Welcome Back </h2>
+
+    <form action="{{ url_for('login') }}" method="POST">
+      <label for="username">Username</label>
+      <input type="text" name="username" required>
+
+      <label for="password">Password</label>
+      <input type="password" name="password" required>
+
+    
+
+      <button type="submit"
+            style="background: #007AFF; color: white; padding: 12px; border: none; border-radius: 30px;
+            font-size: 16px; font-weight: bold; cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;"
+            onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0, 122, 255, 0.4)'"
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+            Login
+        </button>
+
+    </form>
+
+    <p>Don’t have an account?
+      <a href="{{ url_for('register') }}">Register here</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

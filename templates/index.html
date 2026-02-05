@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Fiora AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    /* General Styles */
+    body {
+      background-color: #f4f9f9; /* Soft pastel background */
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    /* Slideshow Styling */
+    .slideshow {
+      position: relative;
+      max-height: 90vh;
+      overflow: hidden;
+      border-bottom: 5px solid #c8dff9; /* Bottom border for emphasis */
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 90vh;
+      position: relative;
+      animation: fadeSlide 1s ease-in-out forwards;
+      background-color: transparent;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease; /* Smooth zoom effect */
+    }
+
+    .slide.active img {
+      transform: scale(1.05); /* Slight zoom on active slide */
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    .slide-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Center vertically */
+      align-items: center; /* Center horizontally */
+      text-align: center;
+      color: black;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: 0.5s;
+    }
+
+    .slide-overlay h1 {
+      font-size: 4em; /* Increased from 3em */
+      font-weight: 700;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+      line-height: 1.2;
+      color: rgb(37, 37, 37);
+    }
+
+    .slide-overlay p {
+      font-size: 1.6em; /* Increased from 1.1em */
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+      margin-bottom: 25px;
+      letter-spacing: 0.5px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      color: rgb(37, 37, 37);
+    }
+
+    .cta-button {
+      background: transparent;
+      color: black;
+      padding: 12px 28px;
+      font-size: 16px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s, color 0.3s, transform 0.3s;
+      border: 2px solid rgb(37, 37, 37);
+    }
+
+    .cta-button:hover {
+      background: white;
+      color: rgb(37, 37, 37);
+      transform: translateY(-2px); /* Lift effect on hover */
+    }
+    .slide, .features {
+    margin: 0;
+    padding: 0;
+}
+
+    /* Features Section */
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 60px 5%;
+      text-align: center;
+      background-color: #fffcee;
+      flex-wrap: wrap;
+      animation: fadeIn 1s ease forwards; /* Fade-in effect */
+    }
+
+    .feature-card {
+      background-color: #ffffff;
+      border-radius: 20px;
+      padding: 30px 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative; /* For hover effect */
+      overflow: hidden; /* Prevent overflow */
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-card img {
+      width: 70px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease; /* Smooth scaling on hover */
+    }
+
+    .feature-card:hover img {
+      transform: scale(1.1); /* Slight zoom on image hover */
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .footer {
+      background: #ffffff;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #666;
+      box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: scale(1.02); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+  </style>
+</head>
+<body>
+
+  {% include 'base.html' %}
+
+  <!-- Slideshow Section -->
+  <div class="slideshow">
+    <div class="slide active">
+      <img src="{{ url_for('static', filename='images/slide1.jpg') }}" alt="Glowing Skin">
+      <div class="slide-overlay">
+        <h1>REVEAL YOUR NATURAL GLOW</h1>
+        <p>Fiora AI personalizes skincare routines made just for you.</p>
+        <a href="{{ url_for('questions') if session.get('username') else url_for('login') }}" class="cta-button">Get Started</a>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="{{ url_for('static', filename='images/slide2.jpg') }}" alt="Minimal Routine">
+      <div class="slide-overlay">
+        <h1>SIMPLE. SMART. SKINCARE.</h1>
+        <p>Minimal products. Maximum impact.</p>
+        <a href="{{ url_for('questions') if session.get('username') else url_for('login') }}" class="cta-button">Explore Routine</a>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="{{ url_for('static', filename='images/slide3.jpg') }}" alt="Natural Beauty">
+      <div class="slide-overlay">
+        <h1>DESIGNED BY AI, LOVED BY YOU</h1>
+        <p>Start your skincare journey with confidence.</p>
+        <a href="{{ url_for('questions') if session.get('username') else url_for('login') }}" class="cta-button">Join Now</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="feature-card">
+      <img src="{{ url_for('static', filename='images/feature1.jpg') }}" alt="Smart Analysis">
+      <h3>Smart Skin Analysis</h3>
+      <p>Upload or capture a photo and let our AI decode your skin’s story.</p>
+    </div>
+    <div class="feature-card">
+      <img src="{{ url_for('static', filename='images/feature2.png') }}" alt="Tailored Products">
+      <h3>Tailored Recommendations</h3>
+      <p>Handpicked skincare matched to your skin type, goals & budget.</p>
+    </div>
+    <div class="feature-card">
+      <img src="{{ url_for('static', filename='images/feature3.jpg') }}" alt="Track Routine">
+      <h3>Track Your Routine</h3>
+      <p>Save your skincare journey & revisit what worked — effortlessly.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Fiora AI. Inspired by timeless beauty and smart skincare.</p>
+  </footer>
+
+  <!-- Slideshow Script -->
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === index) {
+          slide.classList.add('active');
+        }
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    setInterval(nextSlide, 5000); // Change slide every 5 seconds
+  </script>
+</body>
+</html>

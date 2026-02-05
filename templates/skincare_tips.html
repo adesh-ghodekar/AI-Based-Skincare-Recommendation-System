@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <title>Skincare Tips - FIORA.AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f8f5fb;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .content {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .section {
+            margin-bottom: 50px;
+        }
+        .section h2 {
+            color: #682e89;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        .section p, .section ul {
+            font-size: 1.1em;
+            line-height: 1.7em;
+        }
+        .section ul {
+            padding-left: 20px;
+        }
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .flow-step {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 80%;
+            text-align: center;
+            position: relative;
+        }
+        .flow-step i {
+            font-size: 1.5em;
+            color: #6b3c84;
+            margin-right: 10px;
+        }
+        .arrow-down {
+            font-size: 2em;
+            color: #ccc;
+        }
+        .tip-section {
+            background-color: #fff0f7;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-top: 50px;
+        }
+        .tip-section h2 {
+            color: #b83f7c;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        .tip-section p {
+            font-size: 1.2em;
+            line-height: 1.6em;
+            color: #5b305d;
+        }
+        .highlight {
+            background-color: #fce5f0;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 30px 0;
+            text-align: center;
+        }
+        .highlight h3 {
+            color: #982d6b;
+            margin-bottom: 10px;
+        }
+        .highlight p {
+            font-size: 1.1em;
+            color: #5c2d5a;
+        }
+    </style>
+
+    <div class="content">
+        
+
+        <div class="section">
+            <h2>1. Why Knowing Your Skin Type Matters <i class="fas fa-question-circle"></i></h2>
+            <p>Choosing skincare without knowing your skin type is like picking shoes without knowing your size — it may not fit and could even cause problems! 💡</p>
+            <p>Your skin type determines:</p>
+            <ul>
+                <li><strong>Product Effectiveness:</strong> Ingredients that suit oily skin might irritate dry skin and vice versa.</li>
+                <li><strong>Routine Customization:</strong> The right steps and frequency depend on whether your skin is dry, oily, sensitive, etc.</li>
+                <li><strong>Better Results:</strong> A tailored routine ensures healthier, glowing skin!</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. Daily Routine 101 🌞🌛</h2>
+            <div class="flowchart">
+                <div class="flow-step"><i class="fas fa-soap"></i> Cleanser 🧼 - Remove dirt & impurities</div>
+                <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                <div class="flow-step"><i class="fas fa-water"></i> Toner 💧 - Balance your skin's pH</div>
+                <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                <div class="flow-step"><i class="fas fa-vial"></i> Serum ✨ - Target concerns like acne or dullness</div>
+                <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                <div class="flow-step"><i class="fas fa-hand-holding-water"></i> Moisturiser 🥛 - Keep skin hydrated</div>
+                <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                <div class="flow-step"><i class="fas fa-sun"></i> Sunscreen 🛡️ - Protect against sun damage</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. Common Mistakes to Avoid</h2>
+            <ul>
+                <li>Over-exfoliating your skin</li>
+                <li>Skipping sunscreen on cloudy days</li>
+                <li>Mixing incompatible ingredients</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Ingredient Highlights</h2>
+            <p>Look for:</p>
+            <ul>
+                <li><strong>Salicylic Acid</strong> – for acne-prone skin</li>
+                <li><strong>Hyaluronic Acid</strong> – for deep hydration</li>
+                <li><strong>Niacinamide</strong> – to brighten and reduce pores</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Seasonal Tips</h2>
+            <ul>
+                <li><strong>Summer:</strong> Go lightweight and use more SPF.</li>
+                <li><strong>Winter:</strong> Hydrate deeply and use gentle cleansers.</li>
+                <li><strong>Monsoon:</strong> Avoid heavy creams, go for non-comedogenic products.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. Lifestyle & Diet</h2>
+            <p>Stay hydrated, eat a balanced diet, and sleep well. Your skin reflects your overall health!</p>
+        </div>
+
+        <div class="section">
+            <h2>7. Skincare Myths Busted</h2>
+            <ul>
+                <li>"Oily skin doesn't need moisturiser" – False!</li>
+                <li>"Natural means safe" – Not always!</li>
+                <li>"Scrubbing harder = cleaner skin" – Nope!</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. When to See a Dermatologist</h2>
+            <p>If you're dealing with severe acne, persistent irritation, or sudden skin changes – it's time to consult a pro.</p>
+        </div>
+
+        <div class="tip-section">
+            <h2>✨ Bonus Tip from FIORA.AI</h2>
+            <p>Consistency is key! Stick to your routine, be patient, and trust the process. Beautiful skin doesn’t happen overnight, but with the right care, it *does* happen. 💜</p>
+        </div>
+    </div>
+
+{% endblock %}

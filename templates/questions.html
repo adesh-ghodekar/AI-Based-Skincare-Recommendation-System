@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Personalized Questionnaire - Fiora AI{% endblock %}
+
+{% block content %}
+<main class="question-page">
+
+    <div class="overlay"></div>
+
+    <div class="question-container" id="question1">
+        <h2 class="question-title">What is your age group?</h2>
+        <div class="separator"></div>
+        <label class="option"><input type="radio" name="age" value="19 and younger" onclick="nextQuestion()"> 19 and younger</label>
+        <label class="option"><input type="radio" name="age" value="20s" onclick="nextQuestion()"> 20s</label>
+        <label class="option"><input type="radio" name="age" value="30 and above" onclick="nextQuestion()"> 30 and above</label>
+    </div>
+
+    <div class="question-container" id="question2" style="display: none;">
+        <h2 class="question-title">What is your budget per product?</h2>
+        <div class="separator"></div>
+        <label class="option"><input type="radio" name="budget" value="below 500"> Below ₹500</label>
+        <label class="option"><input type="radio" name="budget" value="500-1000"> ₹500 - ₹1000</label>
+        <label class="option"><input type="radio" name="budget" value="1000+"> ₹1000+</label>
+
+        <button onclick="proceedToCapture()" class="reveal-btn">Let's scan & glow</button>
+    </div>
+
+</main>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .question-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: url("{{ url_for('static', filename='images/back1.jpg') }}") no-repeat center center;
+        background-size: cover;
+        position: relative;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        z-index: 1;
+    }
+
+    .question-container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 25px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        animation: fadeIn 0.5s ease-in-out;
+        z-index: 2;
+    }
+
+    .question-title {
+        font-size: 1.3em;
+        font-weight: bold;
+    }
+
+    .separator {
+        width: 100%;
+        height: 2px;
+        background-color: #ddd;
+        margin: 15px 0;
+    }
+
+    .option {
+        display: block;
+        margin: 12px 0;
+        text-align: left;
+        padding: 12px;
+        border-radius: 15px;
+        background-color: #f5f5f5;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .option:hover {
+        background-color: #e0e0e0;
+    }
+
+    .reveal-btn {
+        margin-top: 20px;
+        padding: 12px 24px;
+        background-color: #007AFF;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .reveal-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    function nextQuestion() {
+        document.getElementById('question1').style.display = 'none';
+        document.getElementById('question2').style.display = 'block';
+    }
+
+    function proceedToCapture() {
+        const age = document.querySelector('input[name="age"]:checked')?.value;
+        const budget = document.querySelector('input[name="budget"]:checked')?.value;
+
+        if (age && budget) {
+            fetch('/store_preferences', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ age, budget })
+            }).then(() => {
+                window.location.href = "/capture";
+            });
+        } else {
+            alert("Please answer both questions.");
+        }
+    }
+</script>
+{% endblock %}

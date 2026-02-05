@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+{% block title %}Routine - Fiora AI{% endblock %}
+{% block content %}
+
+<div class="routine-header">
+    <h1>Your Custom Skincare Routine</h1>
+</div>
+
+<div class="toggle-switch" style="text-align: center; margin-bottom: 30px;">
+    <button id="am-btn" class="toggle-button active"><i class="fas fa-sun"></i> AM</button>
+    <button id="pm-btn" class="toggle-button"><i class="fas fa-moon"></i> PM</button>
+</div>
+
+<div id="routine-list">
+    {% set steps = [
+        ("Cleanser", "Wash your face to remove dirt and oil."),
+        ("Face Mask", "Use after cleansing if you're doing a mask (1–2 times a week)."),
+        ("Toner", "Apply to prep your skin and restore pH."),
+        ("Serum", "Apply active ingredients to target skin concerns."),
+        ("Moisturizer", "Lock in hydration."),
+        ("Sunscreen", "Always the final step in the morning routine to protect from UV rays.")
+    ] %}
+
+    {% for category, instruction in steps %}
+        {% if selected_products[category] %}
+            {% set product = selected_products[category] %}
+            <div class="routine-step" data-category="{{ category }}" data-usage="{{ product['Usage'] }}">
+                <img src="{{ url_for('static', filename=product['Img']) }}" alt="{{ product['Product Name'] }}">
+                <div class="routine-content">
+                    <div class="step-label"></div>
+                    <h3>{{ product['Product Name'] }}</h3>
+                    <p><strong>₹{{ product['Price'] }}</strong></p>
+                    <p>{{ product['Description'] }}</p>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div style="text-align: center; margin-top: 40px;">
+    <button id="saveRoutineBtn" class="cta-button">💾 Save Routine</button>
+    <p id="save-message" style="margin-top: 10px; display: none; color: green;font-weight: bold;">
+        ✅ Routine saved successfully!
+    </p>
+</div>
+
+<style>
+    body {
+        font-family: 'Helvetica Neue', sans-serif;
+        background-color: #f6f8fa;
+    }
+
+    .routine-header {
+        text-align: center;
+        padding: 40px 20px 10px;
+        background-color: #fff;
+    }
+
+    .routine-header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    .toggle-switch {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .toggle-button {
+        padding: 12px 30px;
+        border: 2px solid #2a7ec5;
+        background-color: white;
+        color: #2a7ec5;
+        cursor: pointer;
+        font-size: 1em;
+        margin: 0 10px;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .toggle-button.active {
+        background-color: #2a7ec5;
+        color: white;
+    }
+
+    .routine-step {
+        background: #fff;
+        margin: 30px auto;
+        width: 90%;
+        max-width: 800px;
+        padding: 30px;
+        border-radius: 25px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .routine-step img {
+        width: 160px;
+        height: 160px;
+        object-fit: contain;
+        border-radius: 15px;
+        background-color: #f0f0f0;
+        padding: 10px;
+    }
+
+    .routine-content {
+        flex: 1;
+    }
+
+    .routine-content h3 {
+        margin-top: 0;
+        font-size: 1.4em;
+        color: #333;
+    }
+
+    .routine-content p {
+        font-size: 1em;
+        color: #555;
+        margin: 6px 0;
+    }
+
+    .routine-content .step-label {
+        font-weight: bold;
+        color: #2a7ec5;
+        margin-bottom: 10px;
+        font-size: 1em;
+    }
+
+    .cta-button {
+        background: #2a7ec5;
+        color: white;
+        padding: 12px 30px;
+        font-size: 16px;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease;
+    }
+
+    .cta-button:hover {
+        background: #145f9e;
+    }
+</style>
+
+<script>
+    const amBtn = document.getElementById('am-btn');
+    const pmBtn = document.getElementById('pm-btn');
+    const routineSteps = document.querySelectorAll('.routine-step');
+    const saveBtn = document.getElementById('saveRoutineBtn');
+    const saveMsg = document.getElementById('save-message');
+
+    const stepDetails = {
+        'Cleanser': 'Wash your face to remove dirt and oil.',
+        'Face Mask': "Use after cleansing if you're doing a mask (1–2 times a week).",
+        'Toner': 'Apply to prep your skin and restore pH.',
+        'Serum': 'Apply active ingredients to target skin concerns.',
+        'Moisturizer': 'Lock in hydration.',
+        'Sunscreen': 'Always the final step in the morning routine to protect from UV rays.'
+    };
+
+    function updateStepLabels() {
+        const visibleSteps = [...routineSteps].filter(step => step.style.display !== 'none');
+        visibleSteps.forEach((step, index) => {
+            const category = step.dataset.category;
+            const label = `Step ${index + 1}: ${category} - ${stepDetails[category] || ''}`;
+            step.querySelector('.step-label').textContent = label;
+        });
+    }
+
+    function filterRoutine(mode) {
+        routineSteps.forEach(step => {
+            const usage = step.dataset.usage;
+            if ((mode === 'AM' && (usage === 'AM' || usage === 'AM/PM')) ||
+                (mode === 'PM' && (usage === 'PM' || usage === 'AM/PM'))) {
+                step.style.display = 'flex';
+            } else {
+                step.style.display = 'none';
+            }
+        });
+        updateStepLabels();
+    }
+
+    amBtn.addEventListener('click', () => {
+        amBtn.classList.add('active');
+        pmBtn.classList.remove('active');
+        filterRoutine('AM');
+    });
+
+    pmBtn.addEventListener('click', () => {
+        pmBtn.classList.add('active');
+        amBtn.classList.remove('active');
+        filterRoutine('PM');
+    });
+
+    // Initial load
+    filterRoutine('AM');
+
+    // ✅ Save AM+PM Routine Together
+    saveBtn.addEventListener('click', () => {
+        const selectedProducts = {};
+
+        routineSteps.forEach(step => {
+            const category = step.dataset.category;
+            const name = step.querySelector('h3').textContent.trim();
+            selectedProducts[category] = name;
+        });
+
+        fetch('/save_selections', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ selected_products: selectedProducts })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                saveMsg.style.display = 'block';
+                saveMsg.textContent = '✅ Routine saved successfully!';
+                setTimeout(() => {
+                    saveMsg.style.display = 'none';
+                }, 3000);
+            } else {
+                saveMsg.textContent = '❌ Failed to save routine.';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            saveMsg.textContent = '❌ Error saving routine.';
+        });
+    });
+</script>
+
+{% endblock %}
