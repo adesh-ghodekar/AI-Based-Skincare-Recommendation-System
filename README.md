@@ -45,4 +45,4 @@ Database: SQLite
 Libraries: OpenCV, Pandas, Werkzeug
 
 # How to run code
-1.Download the zip file 2.extract the downloaded zip file 3.open comand prompt and type (cd file path) 4.type (python app.py) and run 5.run the given link on browser 6.ready to use the project
+1.Download the zip file 2.extract the downloaded zip file 3.open comand prompt and type (cd file path) 4.type (python app.py) and run 5.run the given link on browser 6.ready to use the project.
