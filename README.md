@@ -1,5 +1,5 @@
 # AI-Based-Skincare-Recommendation-System
-An AI-powered skincare recommendation system that analyzes facial skin images using Deep Learning to detect skin conditions and suggest personalized skincare products. The system also maintains user history to track skin improvement over time.
+An AI-powered skincare recommendation system that analyzes facial skin images using Deep Learning to detect skin conditions and suggest personalized skincare products. The system also maintains user history to track skin improvement over time
 
 # Project Overview
 This project uses Machine Learning and Computer Vision techniques to analyze uploaded skin images and identify conditions such as acne. Based on the detected skin condition, the system recommends suitable skincare products.
