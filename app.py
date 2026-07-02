@@ -168,7 +168,7 @@ def results():
             return df_[df_['Price'] >= 1000]
         return df_
 
-    # Age Filter
+    # Age Filterr
     age_limit = 30 if age == '30 and above' else 29 if age == '20s' else 19
 
     if skin_type.lower() == 'combination':
